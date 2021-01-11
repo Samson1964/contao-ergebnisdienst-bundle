@@ -2,6 +2,8 @@
 
 <?php $this->block('content'); ?>
 
-Hallo
+<?= $this->debug ?>
+
+<div>Fehler: <b><?= $this->error ?></b></div>
 
 <?php $this->endblock(); ?>

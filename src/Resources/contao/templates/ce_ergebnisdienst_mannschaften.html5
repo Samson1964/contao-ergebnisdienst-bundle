@@ -1,0 +1,26 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<div>
+<?php if(!$this->error): ?>
+	<table>
+		<tr>
+			<th>Nr.</th>
+			<th>Mannschaft</th>
+		</tr>
+		<?php foreach($this->daten as $item): ?>
+			<tr class="<?= $item['class'] ?>">
+				<td><?= $item['Nummer'] ?></td>
+				<td><b><?= $item['Mannschaft'] ?></b><?php if($item['Aufstellung']): ?><br><i><?= $item['Aufstellung'] ?></i><?php endif; ?></td>
+			</tr>
+		<?php endforeach; ?>
+	</table>
+<?php else: ?>
+	Fehler: <b><?= $this->error ?></b>
+<?php endif; ?>
+</div>
+
+<?= $this->debug ?>
+
+<?php $this->endblock(); ?>

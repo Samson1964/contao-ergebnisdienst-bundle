@@ -14,15 +14,24 @@
 /**
  * palettes
  */
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{ergebnisdienst_legend:hide},ergebnisdienst_api_id';
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{ergebnisdienst_legend:hide},ergebnisdienst_apikey_bl,ergebnisdienst_apikey_dsol';
 
 /**
  * fields
  */
 
-$GLOBALS['TL_DCA']['tl_settings']['fields']['ergebnisdienst_api_id'] = array
+$GLOBALS['TL_DCA']['tl_settings']['fields']['ergebnisdienst_apikey_bl'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ergebnisdienst_api_id'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ergebnisdienst_apikey_bl'],
+	'exclude'                 => true,
+	'inputType'               => 'text',
+	'eval'                    => array('tl_class'=>'w50'),
+	'sql'                     => "varchar(255) NOT NULL default ''"
+);
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['ergebnisdienst_apikey_dsol'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['ergebnisdienst_apikey_dsol'],
 	'exclude'                 => true,
 	'inputType'               => 'text',
 	'eval'                    => array('tl_class'=>'w50'),
