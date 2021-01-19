@@ -8,7 +8,7 @@ $GLOBALS['TL_DCA']['tl_content']['config']['onload_callback'][] = array('tl_cont
 /**
  * Paletten
  */
-$GLOBALS['TL_DCA']['tl_content']['palettes']['ergebnisdienst'] = '{type_legend},type,headline;{ergebnisdienst_main_legend},ergebnisdienst_api,ergebnisdienst_saison,ergebnisdienst_liga;{ergebnisdienst_options_legend},ergebnisdienst_typ,ergebnisdienst_mannschaft;{protected_legend:hide},protected;{expert_legend:hide},guest,cssID,space;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['ergebnisdienst'] = '{type_legend},type,headline;{ergebnisdienst_main_legend},ergebnisdienst_api,ergebnisdienst_saison,ergebnisdienst_liga;{ergebnisdienst_options_legend},ergebnisdienst_typ,ergebnisdienst_runde,ergebnisdienst_mannschaft;{protected_legend:hide},protected;{expert_legend:hide},guest,cssID,space;{invisible_legend:hide},invisible,start,stop';
 
 /**
  * Felder
@@ -114,6 +114,25 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['ergebnisdienst_typ'] = array
 	'sql'                    => "varchar(2) NOT NULL default ''"
 );
 
+// Runden anzeigen
+$GLOBALS['TL_DCA']['tl_content']['fields']['ergebnisdienst_runde'] = array
+(
+	'label'                  => &$GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_runde'],
+	'exclude'                => true,
+	'options_callback'       => array('tl_content_ergebnisdienst', 'getRunden'),
+	'inputType'              => 'select',
+	'eval'                   => array
+	(
+		'includeBlankOption' => true,
+		'mandatory'          => false,
+		'multiple'           => false,
+		'chosen'             => true,
+		'submitOnChange'     => false,
+		'tl_class'           => 'w50'
+	),
+	'sql'                    => "varchar(3) NOT NULL default ''"
+);
+
 /*****************************************
  * Klasse tl_content_ergebnisdienst
  *****************************************/
@@ -124,6 +143,7 @@ class tl_content_ergebnisdienst extends \Backend
 	var $saisons = array();
 	var $ligen = array();
 	var $mannschaften = array();
+	var $runden = array();
 
 	/**
 	 * Import the back end user object
@@ -166,6 +186,7 @@ class tl_content_ergebnisdienst extends \Backend
 			// Liga-Array und ggfs. Mannschaften-Array füllen
 			if($dc->activeRecord->ergebnisdienst_saison)
 			{
+				// Ligen laden
 				$result = file_get_contents($base_url.'ligen.php?i='.$apikey.'&s='.$dc->activeRecord->ergebnisdienst_saison);
 				$daten = json_decode($result);
 				if($daten->Ligen_Daten)
@@ -175,6 +196,18 @@ class tl_content_ergebnisdienst extends \Backend
 						$this->ligen[$item->Liga_ID] = $item->Liga_Name;
 					}
 				}
+
+				// Runden laden
+				$result = file_get_contents($base_url.'termine.php?i='.$apikey.'&s='.$dc->activeRecord->ergebnisdienst_saison);
+				$daten = json_decode($result);
+				if($daten->Termine_Daten)
+				{
+					foreach($daten->Termine_Daten as $item)
+					{
+						$this->runden[$item->Termin_Runde] = $item->Termin_Name;
+					}
+				}
+
 				// Mannschaften laden, wenn Liga gewählt ist
 				if($dc->activeRecord->ergebnisdienst_liga)
 				{
@@ -192,7 +225,6 @@ class tl_content_ergebnisdienst extends \Backend
 
 		}
 
-
 		return;
 	}
 
@@ -206,18 +238,17 @@ class tl_content_ergebnisdienst extends \Backend
 
 	public function getLigen(DataContainer $dc)
 	{
-		static $Aufrufe = 0;
-		//echo "getLigen - Aufrufe $Aufrufe<br>";
-		//if(!$this->ligen) self::getErgebnisdienst($dc);
 		return $this->ligen;
 	}
 
 	public function getMannschaften(DataContainer $dc)
 	{
-		static $Aufrufe = 0;
-		//echo "getLigen - Aufrufe $Aufrufe<br>";
-		//if(!$this->ligen) self::getErgebnisdienst($dc);
 		return $this->mannschaften;
+	}
+
+	public function getRunden(DataContainer $dc)
+	{
+		return $this->runden;
 	}
 
 	public function getTypen(DataContainer $dc)

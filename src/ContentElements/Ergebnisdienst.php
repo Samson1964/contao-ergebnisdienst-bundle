@@ -123,6 +123,59 @@ class Ergebnisdienst extends \ContentElement
 					}
 					break;
 
+				case '3': // Ergebnisse/Paarungen
+					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_paarungen');
+					if($this->ergebnisdienst_runde)
+						$result = file_get_contents($base_url.'/ergebnisse.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r='.$this->ergebnisdienst_runde);
+					else
+						// Gibt keine Einzelergebnisse aus!
+						$result = file_get_contents($base_url.'/ansetzungen.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r=all');
+
+					$daten = json_decode($result);
+					$ausgabe = array();
+					// Ansetzungen vorhanden?
+					if($daten->Ansetzungen_Daten)
+					{
+						$i = 0;
+						foreach($daten->Ansetzungen_Daten as $ansetzung)
+						{
+							if(!$this->ergebnisdienst_mannschaft || $this->ergebnisdienst_mannschaft == $ansetzung->Ansetzung_Heim_ID || $this->ergebnisdienst_mannschaft == $ansetzung->Ansetzung_Gast_ID)
+							{
+								$ausgabe[$i] = array
+								(
+									'nummer'    => $ansetzung->Ansetzung_ID,
+									'heim_name' => $ansetzung->Ansetzung_Heim_Name,
+									'gast_name' => $ansetzung->Ansetzung_Gast_Name,
+									'ergebnis'  => $ansetzung->Ansetzung_Heim_BP || $ansetzung->Ansetzung_Gast_BP ? $ansetzung->Ansetzung_Heim_BP.':'.$ansetzung->Ansetzung_Gast_BP : '-',
+									'bretter'   => array()
+								);
+								// Einzelergebnisse vorhanden?
+								if($ansetzung->Ergebnisse_Daten)
+								{
+									$oddeven = 'odd';
+									foreach($ansetzung->Ergebnisse_Daten as $brett)
+									{
+										$oddeven = ($oddeven == 'odd') ? 'even' : 'odd';
+										$ausgabe[$i]['bretter'][] = array
+										(
+											'class'       => $oddeven,
+											'brett'       => $brett->Ergebnis_Brett,
+											'heim_name'   => trim($brett->Ergebnis_Heim_Spieler_Titel.' '.$brett->Ergebnis_Heim_Spieler_Vorname.' '.$brett->Ergebnis_Heim_Spieler_Nachname),
+											'heim_rating' => $brett->Ergebnis_Heim_Spieler_Rating,
+											'heim_farbe'  => $brett->Ergebnis_Heim_Farbe == 'S' ? 'black' : 'white',
+											'gast_name'   => trim($brett->Ergebnis_Gast_Spieler_Titel.' '.$brett->Ergebnis_Gast_Spieler_Vorname.' '.$brett->Ergebnis_Gast_Spieler_Nachname),
+											'gast_rating' => $brett->Ergebnis_Gast_Spieler_Rating,
+											'gast_farbe'  => $brett->Ergebnis_Gast_Farbe == 'S' ? 'black' : 'white',
+											'ergebnis'    => $brett->Ergebnis_Heim_Ergebnis || $brett->Ergebnis_Gast_Ergebnis ? $brett->Ergebnis_Heim_Ergebnis.':'.$brett->Ergebnis_Gast_Ergebnis : '-'
+										);
+									}
+								}
+								$i++;
+							}
+						}
+					}
+					break;
+
 				default:
 			}
 			
@@ -160,7 +213,7 @@ class Ergebnisdienst extends \ContentElement
 		
 		$this->Template->daten = $ausgabe;
 		$this->Template->error = $fehler;
-		$this->Template->debug = '<pre>'.print_r($players, true).'</pre>';
+		//$this->Template->debug = '<pre>'.print_r($daten, true).print_r($ausgabe, true).'</pre>';
 
 		return;
 

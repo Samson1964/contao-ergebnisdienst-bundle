@@ -1,5 +1,9 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.0.4 (2021-01-19)
+
+* Add: Ergebnisausgabe einer Runde (alle Mannschaften oder nur eine Mannschaft) mit Einzelergebnissen
+
 ## Version 0.0.3 (2021-01-11)
 
 * Fix: Debug-Ausgabe im Template entfernt

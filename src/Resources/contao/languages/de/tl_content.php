@@ -7,6 +7,7 @@ $GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_liga'] = array('Schritt 3: Lig
 
 $GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_options_legend'] = 'Anzeigeart und Mannschaft';
 $GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_typ'] = array('Anzeige', 'Bitte wählen Sie die Anzeige aus.');
+$GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_runde'] = array('Runde (optional)', 'Bitte wählen Sie die Runde aus.');
 $GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_mannschaft'] = array('Mannschaft (optional)', 'Bitte wählen Sie eine Mannschaft aus (optional).');
 
 // Mögliche APIs festlegen
@@ -22,6 +23,6 @@ $GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_anzeigearten'] = array
 	'12' => 'Mannschaften (mit Aufstellung an Brett 1-8)',
 	'13' => 'Mannschaften (mit kompletter Aufstellung)',
 	'2'  => 'Termine',
-	'3'  => 'Ergebnisse',
+	'3'  => 'Paarungen/Ergebnisse',
 	'4'  => 'Tabelle'
 );

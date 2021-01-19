@@ -1,0 +1,46 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<div>
+<?php if(!$this->error): ?>
+	<?php if($this->daten): ?>
+		<table>
+			<?php foreach($this->daten as $item): ?>
+				<tr>
+					<th><?= $item['nummer'] ?></th>
+					<th><?= $item['heim_name'] ?></th>
+					<th>DWZ</th>
+					<th><?= $item['ergebnis'] ?></th>
+					<th><?= $item['gast_name'] ?></th>
+					<th>DWZ</th>
+				</tr>
+				<?php if($item['bretter']): ?>
+					<?php foreach($item['bretter'] as $brett): ?>
+						<tr class="<?= $brett['class'] ?>">
+							<td><?= $brett['brett'] ?></td>
+							<td class="<?= $brett['heim_farbe'] ?>"><?= $brett['heim_name'] ?></td>
+							<td><?= $brett['heim_rating'] ?></td>
+							<td><?= $brett['ergebnis'] ?></td>
+							<td class="<?= $brett['gast_farbe'] ?>"><?= $brett['gast_name'] ?></td>
+							<td><?= $brett['gast_rating'] ?></td>
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+				<tr>
+					<td class="delimiter" colspan="6">&nbsp;</td>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+	<?php endif; ?>
+
+<?php else: ?>
+	Fehler: <b><?= $this->error ?></b>
+<?php endif; ?>
+</div>
+
+<?php if($this->debug): ?>
+	<?= $this->debug; ?>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>
