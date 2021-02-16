@@ -143,7 +143,7 @@ class Ergebnisdienst extends \ContentElement
 							{
 								$ausgabe[$i] = array
 								(
-									'nummer'    => $ansetzung->Ansetzung_ID,
+									'nummer'    => $ansetzung->Ergebnisse_Daten ? 'Br.' : ($i + 1),
 									'heim_name' => $ansetzung->Ansetzung_Heim_Name,
 									'gast_name' => $ansetzung->Ansetzung_Gast_Name,
 									'ergebnis'  => $ansetzung->Ansetzung_Heim_BP || $ansetzung->Ansetzung_Gast_BP ? $ansetzung->Ansetzung_Heim_BP.':'.$ansetzung->Ansetzung_Gast_BP : '-',
@@ -172,6 +172,57 @@ class Ergebnisdienst extends \ContentElement
 								}
 								$i++;
 							}
+						}
+					}
+					break;
+
+				case '4': // Tabelle
+					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_tabelle');
+					if($this->ergebnisdienst_runde)
+						// Tabelle nach Runde x
+						$result = file_get_contents($base_url.'/tabelle.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r='.$this->ergebnisdienst_runde);
+					else
+						// Tabelle nach allen Runden
+						$result = file_get_contents($base_url.'/tabelle.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r=all');
+
+					$daten = json_decode($result);
+					$ausgabe = array();
+
+					// Mannschaften ausgeben
+					if($daten->Tabelle_Daten)
+					{
+						// Leere Kreuztabelle anlegen
+						$kreuztabelle = array();
+						for($x = 1; $x <= $daten->Tabelle_Anzahl; $x++)
+						{
+							for($y = 1; $y <= $daten->Tabelle_Anzahl; $y++)
+							{
+								$kreuztabelle[$x][$y] = ($x == $y) ? 'x' : '';
+							}
+						}
+
+						$i = 0;
+						foreach($daten->Tabelle_Daten as $ansetzung)
+						{
+							$ausgabe[$i] = array
+							(
+								'Platz'      => $ansetzung->Tabelle_Platz,
+								'Name'       => $ansetzung->Tabelle_Mannschaft_Name,
+								'Spiele'     => $ansetzung->Tabelle_Spiele,
+								'MP'         => $ansetzung->Tabelle_MP,
+								'BP'         => str_replace('.', ',', sprintf('%0.1f', $ansetzung->Tabelle_BP)),
+								'BW'         => $ansetzung->Tabelle_BW,
+								'Rueckzug'   => $ansetzung->Tabelle_Mannschaft_Rueckzug
+							);
+							// Ergebnisse in Kreuztabelle eintragen
+							if($ansetzung->Ansetzungen_Daten)
+							{
+								foreach($ansetzung->Ansetzungen_Daten as $ergebnis)
+								{
+									$kreuztabelle[$i+1][$ergebnis->Ansetzung_Gegner_Platz] = str_replace('.', ',', sprintf('%0.1f', $ergebnis->Ansetzung_BP));
+								}
+							}
+							$i++;
 						}
 					}
 					break;
@@ -212,8 +263,10 @@ class Ergebnisdienst extends \ContentElement
 		}
 		
 		$this->Template->daten = $ausgabe;
+		if($kreuztabelle) $this->Template->kreuztabelle = $kreuztabelle;
 		$this->Template->error = $fehler;
 		//$this->Template->debug = '<pre>'.print_r($daten, true).print_r($ausgabe, true).'</pre>';
+		//$this->Template->debug = '<pre>'.print_r($kreuztabelle, true).print_r($ausgabe, true).'</pre>';
 
 		return;
 

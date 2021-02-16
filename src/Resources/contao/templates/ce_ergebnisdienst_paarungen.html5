@@ -6,17 +6,25 @@
 <?php if(!$this->error): ?>
 	<?php if($this->daten): ?>
 		<table>
-			<?php foreach($this->daten as $item): ?>
+			<?php for($x = 0; $x < count($this->daten); $x++): ?>
 				<tr>
-					<th><?= $item['nummer'] ?></th>
-					<th><?= $item['heim_name'] ?></th>
-					<th>DWZ</th>
-					<th><?= $item['ergebnis'] ?></th>
-					<th><?= $item['gast_name'] ?></th>
-					<th>DWZ</th>
+					<th><?= $this->daten[$x]['nummer'] ?></th>
+					<?php if($this->daten[$x]['bretter']): ?>
+						<th><?= $this->daten[$x]['heim_name'] ?></th>
+						<th>DWZ</th>
+					<?php else: ?>
+						<th colspan="2"><?= $this->daten[$x]['heim_name'] ?></th>
+					<?php endif; ?>
+					<th><?= $this->daten[$x]['ergebnis'] ?></th>
+					<?php if($this->daten[$x]['bretter']): ?>
+						<th><?= $this->daten[$x]['gast_name'] ?></th>
+						<th>DWZ</th>
+					<?php else: ?>
+						<th colspan="2"><?= $this->daten[$x]['gast_name'] ?></th>
+					<?php endif; ?>
 				</tr>
-				<?php if($item['bretter']): ?>
-					<?php foreach($item['bretter'] as $brett): ?>
+				<?php if($this->daten[$x]['bretter']): ?>
+					<?php foreach($this->daten[$x]['bretter'] as $brett): ?>
 						<tr class="<?= $brett['class'] ?>">
 							<td><?= $brett['brett'] ?></td>
 							<td class="<?= $brett['heim_farbe'] ?>"><?= $brett['heim_name'] ?></td>
@@ -27,10 +35,12 @@
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
-				<tr>
-					<td class="delimiter" colspan="6">&nbsp;</td>
-				</tr>
-			<?php endforeach; ?>
+				<?php if($x+1 < count($this->daten)): ?>
+					<tr>
+						<td class="delimiter" colspan="6">&nbsp;</td>
+					</tr>
+				<?php endif; ?>
+			<?php endfor; ?>
 		</table>
 	<?php endif; ?>
 

@@ -1,0 +1,50 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<div>
+<?php if(!$this->error): ?>
+	<?php if($this->daten): ?>
+		<table>
+			<tr>
+				<th>Pl.</th>
+				<th>Mannschaft</th>
+				<th>Sp.</th>
+				<th>MP</th>
+				<th>BP</th>
+				<?php if($this->kreuztabelle): ?>
+					<?php for($y = 1; $y <= count($this->kreuztabelle); $y++): ?>
+						<th class="result"><?= $y ?></th>
+					<?php endfor; ?>
+				<?php endif; ?>
+			</tr>
+			<?php for($x = 0; $x < count($this->daten); $x++): ?>
+				<tr>
+					<td><?= $this->daten[$x]['Platz'] ?></td>
+					<td><?= $this->daten[$x]['Name'] ?></td>
+					<td><?= $this->daten[$x]['Spiele'] ?></td>
+					<td><?= $this->daten[$x]['MP'] ?></td>
+					<td><?= $this->daten[$x]['BP'] ?></td>
+					<?php if($this->kreuztabelle): ?>
+						<?php for($y = 1; $y <= count($this->kreuztabelle); $y++): ?>
+							<?php 
+								if($this->kreuztabelle[$x+1][$y] == 'x') $class = ' blindfeld'; else $class = '';
+							?>
+							<td class="result<?= $class ?>"><?= $this->kreuztabelle[$x+1][$y] ?></td>
+						<?php endfor; ?>
+					<?php endif; ?>
+				</tr>
+			<?php endfor; ?>
+		</table>
+	<?php endif; ?>
+
+<?php else: ?>
+	Fehler: <b><?= $this->error ?></b>
+<?php endif; ?>
+</div>
+
+<?php if($this->debug): ?>
+	<?= $this->debug; ?>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>
