@@ -7,11 +7,11 @@
 	<?php if($this->daten): ?>
 		<table>
 			<tr>
-				<th>Pl.</th>
-				<th>Mannschaft</th>
-				<th>Sp.</th>
-				<th>MP</th>
-				<th>BP</th>
+				<th class="place">Pl.</th>
+				<th class="name">Mannschaft</th>
+				<th class="points">Sp.</th>
+				<th class="points">MP</th>
+				<th class="points">BP</th>
 				<?php if($this->kreuztabelle): ?>
 					<?php for($y = 1; $y <= count($this->kreuztabelle); $y++): ?>
 						<th class="result"><?= $y ?></th>
@@ -19,12 +19,12 @@
 				<?php endif; ?>
 			</tr>
 			<?php for($x = 0; $x < count($this->daten); $x++): ?>
-				<tr>
-					<td><?= $this->daten[$x]['Platz'] ?></td>
-					<td><?= $this->daten[$x]['Name'] ?></td>
-					<td><?= $this->daten[$x]['Spiele'] ?></td>
-					<td><?= $this->daten[$x]['MP'] ?></td>
-					<td><?= $this->daten[$x]['BP'] ?></td>
+				<tr class="<?= $this->daten[$x]['class'] ?>">
+					<td class="place"><?= $this->daten[$x]['Platz'] ?></td>
+					<td class="name"><?= $this->daten[$x]['Name'] ?></td>
+					<td class="points"><?= $this->daten[$x]['Spiele'] ?></td>
+					<td class="points"><?= $this->daten[$x]['MP'] ?></td>
+					<td class="points"><?= $this->daten[$x]['BP'] ?></td>
 					<?php if($this->kreuztabelle): ?>
 						<?php for($y = 1; $y <= count($this->kreuztabelle); $y++): ?>
 							<?php 

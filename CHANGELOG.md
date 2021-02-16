@@ -1,5 +1,10 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.1.1 (2021-02-16)
+
+* Add: Unterscheidung bei Tabellen - Rangliste und Kreuztabelle
+* Add: CSS-Klassen für Tabellen hinzugefügt
+
 ## Version 0.1.0 (2021-02-16)
 
 * Fix: Leerzeile hinter letzter Paarung entfernt (Template ce_ergebnisdienst_paarungen geändert)

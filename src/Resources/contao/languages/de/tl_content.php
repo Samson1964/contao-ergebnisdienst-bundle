@@ -24,5 +24,6 @@ $GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_anzeigearten'] = array
 	'13' => 'Mannschaften (mit kompletter Aufstellung)',
 	'2'  => 'Termine',
 	'3'  => 'Paarungen/Ergebnisse',
-	'4'  => 'Tabelle'
+	'4'  => 'Tabelle (Rangliste)',
+	'41' => 'Tabelle (Kreuztabelle)'
 );

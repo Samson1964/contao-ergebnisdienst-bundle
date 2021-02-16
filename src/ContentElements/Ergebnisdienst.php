@@ -176,7 +176,8 @@ class Ergebnisdienst extends \ContentElement
 					}
 					break;
 
-				case '4': // Tabelle
+				case '4': // Tabelle (Rangliste)
+				case '41': // Tabelle (Kreuztabelle)
 					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_tabelle');
 					if($this->ergebnisdienst_runde)
 						// Tabelle nach Runde x
@@ -191,21 +192,27 @@ class Ergebnisdienst extends \ContentElement
 					// Mannschaften ausgeben
 					if($daten->Tabelle_Daten)
 					{
-						// Leere Kreuztabelle anlegen
-						$kreuztabelle = array();
-						for($x = 1; $x <= $daten->Tabelle_Anzahl; $x++)
+
+						if($this->ergebnisdienst_typ == '41')
 						{
-							for($y = 1; $y <= $daten->Tabelle_Anzahl; $y++)
+							// Leere Kreuztabelle anlegen
+							$kreuztabelle = array();
+							for($x = 1; $x <= $daten->Tabelle_Anzahl; $x++)
 							{
-								$kreuztabelle[$x][$y] = ($x == $y) ? 'x' : '';
+								for($y = 1; $y <= $daten->Tabelle_Anzahl; $y++)
+								{
+									$kreuztabelle[$x][$y] = ($x == $y) ? 'x' : '';
+								}
 							}
 						}
 
 						$i = 0;
 						foreach($daten->Tabelle_Daten as $ansetzung)
 						{
+							$oddeven = ($oddeven == 'odd') ? 'even' : 'odd';
 							$ausgabe[$i] = array
 							(
+								'class'      => $oddeven,
 								'Platz'      => $ansetzung->Tabelle_Platz,
 								'Name'       => $ansetzung->Tabelle_Mannschaft_Name,
 								'Spiele'     => $ansetzung->Tabelle_Spiele,
@@ -214,17 +221,23 @@ class Ergebnisdienst extends \ContentElement
 								'BW'         => $ansetzung->Tabelle_BW,
 								'Rueckzug'   => $ansetzung->Tabelle_Mannschaft_Rueckzug
 							);
-							// Ergebnisse in Kreuztabelle eintragen
-							if($ansetzung->Ansetzungen_Daten)
+
+							if($this->ergebnisdienst_typ == '41')
 							{
-								foreach($ansetzung->Ansetzungen_Daten as $ergebnis)
+								// Ergebnisse in Kreuztabelle eintragen
+								if($ansetzung->Ansetzungen_Daten)
 								{
-									$kreuztabelle[$i+1][$ergebnis->Ansetzung_Gegner_Platz] = str_replace('.', ',', sprintf('%0.1f', $ergebnis->Ansetzung_BP));
+									foreach($ansetzung->Ansetzungen_Daten as $ergebnis)
+									{
+										$kreuztabelle[$i+1][$ergebnis->Ansetzung_Gegner_Platz] = str_replace('.', ',', sprintf('%0.1f', $ergebnis->Ansetzung_BP));
+									}
 								}
 							}
+
 							$i++;
 						}
 					}
+					$this->Template->class .= ' tabelle';
 					break;
 
 				default:
