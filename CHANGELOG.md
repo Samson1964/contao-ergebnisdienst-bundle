@@ -1,5 +1,9 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.2.2 (2021-04-19)
+
+* Add: CSS-Klassen für Tabellen in den Templates
+
 ## Version 0.2.1 (2021-04-19)
 
 * Delete: Debugausgabe ContentElements/Ergebnisdienst

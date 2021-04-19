@@ -8,36 +8,36 @@
 		<table>
 			<?php for($x = 0; $x < count($this->daten); $x++): ?>
 				<tr>
-					<th><?= $this->daten[$x]['nummer'] ?></th>
+					<th class="head_0"><?= $this->daten[$x]['nummer'] ?></th>
 					<?php if($this->daten[$x]['bretter']): ?>
-						<th><?= $this->daten[$x]['heim_name'] ?></th>
-						<th>DWZ</th>
+						<th class="head_1"><?= $this->daten[$x]['heim_name'] ?></th>
+						<th class="head_2">DWZ</th>
 					<?php else: ?>
-						<th colspan="2"><?= $this->daten[$x]['heim_name'] ?></th>
+						<th colspan="2" class="head_1_2"><?= $this->daten[$x]['heim_name'] ?></th>
 					<?php endif; ?>
-					<th><?= $this->daten[$x]['ergebnis'] ?></th>
+					<th class="head_3"><?= $this->daten[$x]['ergebnis'] ?></th>
 					<?php if($this->daten[$x]['bretter']): ?>
-						<th><?= $this->daten[$x]['gast_name'] ?></th>
-						<th>DWZ</th>
+						<th class="head_4"><?= $this->daten[$x]['gast_name'] ?></th>
+						<th class="head_5">DWZ</th>
 					<?php else: ?>
-						<th colspan="2"><?= $this->daten[$x]['gast_name'] ?></th>
+						<th colspan="2" class="head_4_5"><?= $this->daten[$x]['gast_name'] ?></th>
 					<?php endif; ?>
 				</tr>
 				<?php if($this->daten[$x]['bretter']): ?>
 					<?php foreach($this->daten[$x]['bretter'] as $brett): ?>
 						<tr class="<?= $brett['class'] ?>">
-							<td><?= $brett['brett'] ?></td>
-							<td class="<?= $brett['heim_farbe'] ?>"><?= $brett['heim_name'] ?></td>
-							<td><?= $brett['heim_rating'] ?></td>
-							<td><?= $brett['ergebnis'] ?></td>
-							<td class="<?= $brett['gast_farbe'] ?>"><?= $brett['gast_name'] ?></td>
-							<td><?= $brett['gast_rating'] ?></td>
+							<td class="col_0"><?= $brett['brett'] ?></td>
+							<td class="col_1 <?= $brett['heim_farbe'] ?>"><?= $brett['heim_name'] ?></td>
+							<td class="col_2"><?= $brett['heim_rating'] ?></td>
+							<td class="col_3"><?= $brett['ergebnis'] ?></td>
+							<td class="col_4 <?= $brett['gast_farbe'] ?>"><?= $brett['gast_name'] ?></td>
+							<td class="col_5"><?= $brett['gast_rating'] ?></td>
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
 				<?php if($x+1 < count($this->daten)): ?>
 					<tr>
-						<td class="delimiter" colspan="6">&nbsp;</td>
+						<td class="delimiter col_0" colspan="6">&nbsp;</td>
 					</tr>
 				<?php endif; ?>
 			<?php endfor; ?>

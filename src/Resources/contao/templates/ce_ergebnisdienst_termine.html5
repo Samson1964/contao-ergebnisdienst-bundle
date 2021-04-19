@@ -8,10 +8,10 @@
 		<table>
 			<?php for($x = 0; $x < count($this->daten); $x++): ?>
 				<tr>
-					<th><?= $this->daten[$x]['datum'] ?></th>
-					<th colspan="2"><?= $this->daten[$x]['heim_name'] ?></th>
-					<th>-</th>
-					<th colspan="2"><?= $this->daten[$x]['gast_name'] ?></th>
+					<th class="head_0"><?= $this->daten[$x]['datum'] ?></th>
+					<th colspan="2" class="head_1_2"><?= $this->daten[$x]['heim_name'] ?></th>
+					<th class="head_3">-</th>
+					<th colspan="2" class="head_4_5"><?= $this->daten[$x]['gast_name'] ?></th>
 				</tr>
 			<?php endfor; ?>
 		</table>

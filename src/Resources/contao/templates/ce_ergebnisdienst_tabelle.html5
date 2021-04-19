@@ -7,11 +7,11 @@
 	<?php if($this->daten): ?>
 		<table>
 			<tr>
-				<th class="place">Pl.</th>
-				<th class="name">Mannschaft</th>
-				<th class="points">Sp.</th>
-				<th class="points">MP</th>
-				<th class="points">BP</th>
+				<th class="head_0 place">Pl.</th>
+				<th class="head_1 name">Mannschaft</th>
+				<th class="head_2 points">Sp.</th>
+				<th class="head_3 points">MP</th>
+				<th class="head_4 points">BP</th>
 				<?php if($this->kreuztabelle): ?>
 					<?php for($y = 1; $y <= count($this->kreuztabelle); $y++): ?>
 						<th class="result"><?= $y ?></th>
