@@ -130,9 +130,6 @@ class Ergebnisdienst extends \ContentElement
 
 					$daten = json_decode($result);
 					$ausgabe = array();
-					echo "<pre>";
-					print_r($daten);
-					echo "</pre>";
 					// Ansetzungen vorhanden?
 					if($daten->Ansetzungen_Daten)
 					{

@@ -1,9 +1,13 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.2.1 (2021-04-19)
+
+* Delete: Debugausgabe ContentElements/Ergebnisdienst
+
 ## Version 0.2.0 (2021-04-19)
 
 * Delete: tl_content.space (wird in Contao 4 nicht mehr unterstützt)
-* Add: Ausgabe der Termine einer Runde
+* Add: Ausgabe der Termine einer Runde + Template ce_ergebnisdienst_termine
 
 ## Version 0.1.1 (2021-02-16)
 
