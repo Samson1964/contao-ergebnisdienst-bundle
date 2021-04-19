@@ -1,5 +1,10 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.2.0 (2021-04-19)
+
+* Delete: tl_content.space (wird in Contao 4 nicht mehr unterstützt)
+* Add: Ausgabe der Termine einer Runde
+
 ## Version 0.1.1 (2021-02-16)
 
 * Add: Unterscheidung bei Tabellen - Rangliste und Kreuztabelle

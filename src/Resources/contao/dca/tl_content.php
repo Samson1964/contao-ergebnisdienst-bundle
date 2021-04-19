@@ -8,7 +8,7 @@ $GLOBALS['TL_DCA']['tl_content']['config']['onload_callback'][] = array('tl_cont
 /**
  * Paletten
  */
-$GLOBALS['TL_DCA']['tl_content']['palettes']['ergebnisdienst'] = '{type_legend},type,headline;{ergebnisdienst_main_legend},ergebnisdienst_api,ergebnisdienst_saison,ergebnisdienst_liga;{ergebnisdienst_options_legend},ergebnisdienst_typ,ergebnisdienst_runde,ergebnisdienst_mannschaft;{protected_legend:hide},protected;{expert_legend:hide},guest,cssID,space;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['ergebnisdienst'] = '{type_legend},type,headline;{ergebnisdienst_main_legend},ergebnisdienst_api,ergebnisdienst_saison,ergebnisdienst_liga;{ergebnisdienst_options_legend},ergebnisdienst_typ,ergebnisdienst_runde,ergebnisdienst_mannschaft;{protected_legend:hide},protected;{expert_legend:hide},guest,cssID;{invisible_legend:hide},invisible,start,stop';
 
 /**
  * Felder

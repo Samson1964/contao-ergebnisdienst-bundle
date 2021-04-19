@@ -123,6 +123,36 @@ class Ergebnisdienst extends \ContentElement
 					}
 					break;
 
+				case '2': // Termine
+					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_termine');
+					if($this->ergebnisdienst_runde)
+						$result = file_get_contents($base_url.'/ansetzungen.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r='.$this->ergebnisdienst_runde);
+
+					$daten = json_decode($result);
+					$ausgabe = array();
+					echo "<pre>";
+					print_r($daten);
+					echo "</pre>";
+					// Ansetzungen vorhanden?
+					if($daten->Ansetzungen_Daten)
+					{
+						$i = 0;
+						foreach($daten->Ansetzungen_Daten as $ansetzung)
+						{
+							if(!$this->ergebnisdienst_mannschaft || $this->ergebnisdienst_mannschaft == $ansetzung->Ansetzung_Heim_ID || $this->ergebnisdienst_mannschaft == $ansetzung->Ansetzung_Gast_ID)
+							{
+								$ausgabe[$i] = array
+								(
+									'datum'     => date("d.m.Y H:i",strtotime($ansetzung->Ansetzung_Termin)),
+									'heim_name' => $ansetzung->Ansetzung_Heim_Name,
+									'gast_name' => $ansetzung->Ansetzung_Gast_Name,
+								);
+								$i++;
+							}
+						}
+					}
+					break;
+
 				case '3': // Ergebnisse/Paarungen
 					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_paarungen');
 					if($this->ergebnisdienst_runde)

@@ -1,0 +1,29 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<div>
+<?php if(!$this->error): ?>
+	<?php if($this->daten): ?>
+		<table>
+			<?php for($x = 0; $x < count($this->daten); $x++): ?>
+				<tr>
+					<th><?= $this->daten[$x]['datum'] ?></th>
+					<th colspan="2"><?= $this->daten[$x]['heim_name'] ?></th>
+					<th>-</th>
+					<th colspan="2"><?= $this->daten[$x]['gast_name'] ?></th>
+				</tr>
+			<?php endfor; ?>
+		</table>
+	<?php endif; ?>
+
+<?php else: ?>
+	Fehler: <b><?= $this->error ?></b>
+<?php endif; ?>
+</div>
+
+<?php if($this->debug): ?>
+	<?= $this->debug; ?>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>
