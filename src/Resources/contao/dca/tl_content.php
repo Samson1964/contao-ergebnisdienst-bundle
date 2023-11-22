@@ -160,7 +160,7 @@ class tl_content_ergebnisdienst extends \Backend
 	public function getErgebnisdienst(DataContainer $dc)
 	{
 
-		if($dc->activeRecord->ergebnisdienst_api)
+		if(isset($dc->activeRecord->ergebnisdienst_api))
 		{
 			switch($dc->activeRecord->ergebnisdienst_api)
 			{
@@ -200,7 +200,7 @@ class tl_content_ergebnisdienst extends \Backend
 				// Runden laden
 				$result = file_get_contents($base_url.'termine.php?i='.$apikey.'&s='.$dc->activeRecord->ergebnisdienst_saison);
 				$daten = json_decode($result);
-				if($daten->Termine_Daten)
+				if(isset($daten->Termine_Daten))
 				{
 					foreach($daten->Termine_Daten as $item)
 					{

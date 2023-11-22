@@ -1,5 +1,12 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.3.1 (2023-11-22)
+
+* Change: README ausgebaut
+* Add: Logging für die Zugriffe auf die API
+* Fix: Fehler beseitigt in Zusammenhang mit PHP 8
+* Fix: Ausgabe der Termine war falsch
+
 ## Version 0.3.0 (2023-11-22)
 
 * Change: Ungetestete Freigabe für PHP 8 in composer.json

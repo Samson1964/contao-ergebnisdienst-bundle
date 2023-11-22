@@ -6,12 +6,16 @@
 <?php if(!$this->error): ?>
 	<?php if($this->daten): ?>
 		<table>
+			<tr>
+				<th class="head_0">Runde</th>
+				<th class="head_1">Datum/Uhrzeit</th>
+				<th class="head_2">Name</th>
+			</tr>
 			<?php for($x = 0; $x < count($this->daten); $x++): ?>
 				<tr>
-					<th class="head_0"><?= $this->daten[$x]['datum'] ?></th>
-					<th colspan="2" class="head_1_2"><?= $this->daten[$x]['heim_name'] ?></th>
-					<th class="head_3">-</th>
-					<th colspan="2" class="head_4_5"><?= $this->daten[$x]['gast_name'] ?></th>
+					<td class="col_0"><?= $this->daten[$x]['runde'] ?></th>
+					<td class="col_1"><?= $this->daten[$x]['datum'] ?></th>
+					<td class="col_2"><?= $this->daten[$x]['name'] ?></th>
 				</tr>
 			<?php endfor; ?>
 		</table>

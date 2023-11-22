@@ -16,9 +16,6 @@ class Ergebnisdienst extends \ContentElement
 	 */
 	protected function compile()
 	{
-	
-		$api_id = $GLOBALS['TL_CONFIG']['ergebnisdienst_api_id']; // API-Schlüssel aus den Einstellungen zuweisen
-
 		if($this->ergebnisdienst_api && $this->ergebnisdienst_saison && $this->ergebnisdienst_liga && $this->ergebnisdienst_typ)
 		{
 			// Ausgabe nur wenn Schnittstelle, Saison, Liga und Anzeigetyp gesetzt sind
@@ -40,8 +37,12 @@ class Ergebnisdienst extends \ContentElement
 			{
 				case '1': // Mannschaften (ohne Aufstellung) anzeigen
 					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_mannschaften');
-					$result = file_get_contents($base_url.'/mannschaften.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga);
+					$url = $base_url.'/mannschaften.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga;
+					$result = file_get_contents($url);
 					$daten = json_decode($result);
+					log_message('Aufruf: '.$url, 'ergebnisdienst.log');
+					log_message('Antwort: '.print_r($daten, true), 'ergebnisdienst.log');
+
 					$ausgabe = array();
 					if($daten->Mannschaften_Daten)
 					{
@@ -74,8 +75,12 @@ class Ergebnisdienst extends \ContentElement
 				case '12': // Mannschaften (mit Aufstellung an Brett 1-8) anzeigen
 				case '13': // Mannschaften (mit kompletter Aufstellung) anzeigen
 					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_mannschaften');
-					$result = file_get_contents($base_url.'/mannschaften.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga);
+					$url = $base_url.'/mannschaften.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga;
+					$result = file_get_contents($url);
 					$daten = json_decode($result);
+					log_message('Aufruf: '.$url, 'ergebnisdienst.log');
+					log_message('Antwort: '.print_r($daten, true), 'ergebnisdienst.log');
+
 					$ausgabe = array();
 					
 					if($this->ergebnisdienst_typ == '11') $max = 4;
@@ -99,8 +104,11 @@ class Ergebnisdienst extends \ContentElement
 							}
 
 							// Aufstellung abfragen
-							$result = file_get_contents($base_url.'/mannschaft.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&m='.$item->Mannschaft_ID);
+							$url = $base_url.'/mannschaft.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&m='.$item->Mannschaft_ID;
+							$result = file_get_contents($url);
 							$players = json_decode($result);
+							log_message('Aufruf: '.$url, 'ergebnisdienst.log');
+							log_message('Antwort: '.print_r($players, true), 'ergebnisdienst.log');
 
 							$aufstellung = array();
 							$i = 0;
@@ -125,27 +133,25 @@ class Ergebnisdienst extends \ContentElement
 
 				case '2': // Termine
 					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_termine');
-					if($this->ergebnisdienst_runde)
-						$result = file_get_contents($base_url.'/ansetzungen.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r='.$this->ergebnisdienst_runde);
-
+					$url = $base_url.'/termine.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga;
+					$result = file_get_contents($url);
 					$daten = json_decode($result);
-					$ausgabe = array();
+					log_message('Aufruf: '.$url, 'ergebnisdienst.log');
+					log_message('Antwort: '.print_r($daten, true), 'ergebnisdienst.log');
+
 					// Ansetzungen vorhanden?
-					if($daten->Ansetzungen_Daten)
+					if(isset($daten->Termine_Daten))
 					{
 						$i = 0;
-						foreach($daten->Ansetzungen_Daten as $ansetzung)
+						foreach($daten->Termine_Daten as $termin)
 						{
-							if(!$this->ergebnisdienst_mannschaft || $this->ergebnisdienst_mannschaft == $ansetzung->Ansetzung_Heim_ID || $this->ergebnisdienst_mannschaft == $ansetzung->Ansetzung_Gast_ID)
-							{
-								$ausgabe[$i] = array
-								(
-									'datum'     => date("d.m.Y H:i",strtotime($ansetzung->Ansetzung_Termin)),
-									'heim_name' => $ansetzung->Ansetzung_Heim_Name,
-									'gast_name' => $ansetzung->Ansetzung_Gast_Name,
-								);
-								$i++;
-							}
+							$ausgabe[$i] = array
+							(
+								'datum' => date("d.m.Y H:i",strtotime($termin->Termin_Timestamp)),
+								'runde' => $termin->Termin_Runde,
+								'name'  => $termin->Termin_Name,
+							);
+							$i++;
 						}
 					}
 					break;
@@ -153,12 +159,20 @@ class Ergebnisdienst extends \ContentElement
 				case '3': // Ergebnisse/Paarungen
 					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_paarungen');
 					if($this->ergebnisdienst_runde)
-						$result = file_get_contents($base_url.'/ergebnisse.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r='.$this->ergebnisdienst_runde);
+					{
+						$url = $base_url.'/ergebnisse.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r='.$this->ergebnisdienst_runde;
+					}
 					else
+					{
 						// Gibt keine Einzelergebnisse aus!
-						$result = file_get_contents($base_url.'/ansetzungen.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r=all');
-
+						$url = $base_url.'/ansetzungen.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r=all';
+					}
+					
+					$result = file_get_contents($url);
 					$daten = json_decode($result);
+					log_message('Aufruf: '.$url, 'ergebnisdienst.log');
+					log_message('Antwort: '.print_r($daten, true), 'ergebnisdienst.log');
+
 					$ausgabe = array();
 					// Ansetzungen vorhanden?
 					if($daten->Ansetzungen_Daten)
@@ -208,12 +222,16 @@ class Ergebnisdienst extends \ContentElement
 					$this->Template = new \FrontendTemplate('ce_ergebnisdienst_tabelle');
 					if($this->ergebnisdienst_runde)
 						// Tabelle nach Runde x
-						$result = file_get_contents($base_url.'/tabelle.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r='.$this->ergebnisdienst_runde);
+						$url = $base_url.'/tabelle.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r='.$this->ergebnisdienst_runde;
 					else
 						// Tabelle nach allen Runden
-						$result = file_get_contents($base_url.'/tabelle.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r=all');
+						$url = $base_url.'/tabelle.php?i='.$apikey.'&s='.$this->ergebnisdienst_saison.'&l='.$this->ergebnisdienst_liga.'&r=all';
 
+					$result = file_get_contents($url);
 					$daten = json_decode($result);
+					log_message('Aufruf: '.$url, 'ergebnisdienst.log');
+					log_message('Antwort: '.print_r($daten, true), 'ergebnisdienst.log');
+
 					$ausgabe = array();
 
 					// Mannschaften ausgeben
@@ -272,12 +290,12 @@ class Ergebnisdienst extends \ContentElement
 			
 		}
 
-		if($daten->success == 1)
+		if(isset($daten->success) && $daten->success == 1)
 		{
 			// Kein Fehler aufgetreten
 			$fehler = false;
 		}
-		else
+		elseif(isset($daten->success) && $daten->success != 1)
 		{
 			switch($daten->success)
 			{
@@ -302,9 +320,9 @@ class Ergebnisdienst extends \ContentElement
 			}
 		}
 		
-		$this->Template->daten = $ausgabe;
-		if($kreuztabelle) $this->Template->kreuztabelle = $kreuztabelle;
-		$this->Template->error = $fehler;
+		$this->Template->daten = isset($ausgabe) ? $ausgabe : '';
+		if(isset($kreuztabelle)) $this->Template->kreuztabelle = $kreuztabelle;
+		$this->Template->error = isset($fehler) ? $fehler : '';
 		//$this->Template->debug = '<pre>'.print_r($daten, true).print_r($ausgabe, true).'</pre>';
 		//$this->Template->debug = '<pre>'.print_r($kreuztabelle, true).print_r($ausgabe, true).'</pre>';
 
