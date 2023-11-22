@@ -1,5 +1,9 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.3.0 (2023-11-22)
+
+* Change: Ungetestete Freigabe für PHP 8 in composer.json
+
 ## Version 0.2.2 (2021-04-19)
 
 * Add: CSS-Klassen für Tabellen in den Templates
