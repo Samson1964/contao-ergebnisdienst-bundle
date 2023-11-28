@@ -1,5 +1,11 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.3.2 (2023-11-28)
+
+* Fix: Geänderte API bei Ausgabe der Brettspieler
+* Fix: Liga-Parameter bei Rundenanzeige im Backend vergessen
+* Fix: Beseitigung von PHP-8-Fehlern, z.B. nicht initialisierte Variablen
+
 ## Version 0.3.1 (2023-11-22)
 
 * Change: README ausgebaut

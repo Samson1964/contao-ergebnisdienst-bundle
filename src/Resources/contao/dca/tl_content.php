@@ -198,7 +198,7 @@ class tl_content_ergebnisdienst extends \Backend
 				}
 
 				// Runden laden
-				$result = file_get_contents($base_url.'termine.php?i='.$apikey.'&s='.$dc->activeRecord->ergebnisdienst_saison);
+				$result = file_get_contents($base_url.'termine.php?i='.$apikey.'&s='.$dc->activeRecord->ergebnisdienst_saison.'&l='.$dc->activeRecord->ergebnisdienst_liga);
 				$daten = json_decode($result);
 				if(isset($daten->Termine_Daten))
 				{

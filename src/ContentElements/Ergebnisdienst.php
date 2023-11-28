@@ -201,11 +201,11 @@ class Ergebnisdienst extends \ContentElement
 										(
 											'class'       => $oddeven,
 											'brett'       => $brett->Ergebnis_Brett,
-											'heim_name'   => trim($brett->Ergebnis_Heim_Spieler_Titel.' '.$brett->Ergebnis_Heim_Spieler_Vorname.' '.$brett->Ergebnis_Heim_Spieler_Nachname),
-											'heim_rating' => $brett->Ergebnis_Heim_Spieler_Rating,
+											'heim_name'   => trim($brett->Ergebnis_Heim_Spieler_FIDE_Titel.' '.$brett->Ergebnis_Heim_Spieler_Vorname.' '.$brett->Ergebnis_Heim_Spieler_Nachname),
+											'heim_rating' => $brett->Ergebnis_Heim_Spieler_DWZ,
 											'heim_farbe'  => $brett->Ergebnis_Heim_Farbe == 'S' ? 'black' : 'white',
-											'gast_name'   => trim($brett->Ergebnis_Gast_Spieler_Titel.' '.$brett->Ergebnis_Gast_Spieler_Vorname.' '.$brett->Ergebnis_Gast_Spieler_Nachname),
-											'gast_rating' => $brett->Ergebnis_Gast_Spieler_Rating,
+											'gast_name'   => trim($brett->Ergebnis_Gast_Spieler_FIDE_Titel.' '.$brett->Ergebnis_Gast_Spieler_Vorname.' '.$brett->Ergebnis_Gast_Spieler_Nachname),
+											'gast_rating' => $brett->Ergebnis_Gast_Spieler_DWZ,
 											'gast_farbe'  => $brett->Ergebnis_Gast_Farbe == 'S' ? 'black' : 'white',
 											'ergebnis'    => $brett->Ergebnis_Heim_Ergebnis || $brett->Ergebnis_Gast_Ergebnis ? $brett->Ergebnis_Heim_Ergebnis.':'.$brett->Ergebnis_Gast_Ergebnis : '-'
 										);
@@ -254,7 +254,7 @@ class Ergebnisdienst extends \ContentElement
 						$i = 0;
 						foreach($daten->Tabelle_Daten as $ansetzung)
 						{
-							$oddeven = ($oddeven == 'odd') ? 'even' : 'odd';
+							$oddeven = (isset($oddeven) == 'odd') ? 'even' : 'odd';
 							$ausgabe[$i] = array
 							(
 								'class'      => $oddeven,
