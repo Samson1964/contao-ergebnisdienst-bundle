@@ -1,5 +1,9 @@
 # DSB-Ergebnisdienst Changelog
 
+## Version 0.3.3 (2024-05-18)
+
+* Fix: Warning: Undefined array key "ergebnisdienst_apis" in tl_content:22
+
 ## Version 0.3.2 (2023-11-28)
 
 * Fix: Geänderte API bei Ausgabe der Brettspieler

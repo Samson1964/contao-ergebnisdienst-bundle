@@ -19,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['ergebnisdienst_api'] = array
 (
 	'label'                  => &$GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_api'],
 	'exclude'                => true,
-	'options'                => $GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_apis'],
+	'options'                => &$GLOBALS['TL_LANG']['tl_content']['ergebnisdienst_apis'],
 	'inputType'              => 'select',
 	//'save_callback'          => array('tl_content_ergebnisdienst', 'resetApis'),
 	'eval'                   => array
